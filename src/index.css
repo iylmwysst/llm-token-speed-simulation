@@ -12,18 +12,18 @@
   --text-muted: #737373;
   --text-subtle: #a3a3a3;
   --cursor: #0a0a0a;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --border: #262626;
-    --text: #f5f5f5;
-    --text-muted: #a3a3a3;
-    --text-subtle: #525252;
-    --cursor: #f5f5f5;
-  }
+:root[data-theme='dark'] {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --border: #262626;
+  --text: #f5f5f5;
+  --text-muted: #a3a3a3;
+  --text-subtle: #525252;
+  --cursor: #f5f5f5;
+  color-scheme: dark;
 }
 
 html,
@@ -38,6 +38,9 @@ body {
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
 }
 
 @keyframes cursor-blink {
