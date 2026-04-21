@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { movingAverage } from '../lib/smoothing';
 import { Sparkline } from './Sparkline';
 
@@ -8,7 +9,7 @@ type Props = {
   elapsedMs: number;
 };
 
-export function PanelStats({ samples, tokenCount, maxTokens, elapsedMs }: Props) {
+export const PanelStats = memo(function PanelStats({ samples, tokenCount, maxTokens, elapsedMs }: Props) {
   const smooth = movingAverage(samples, 3);
   const remaining = Math.max(0, maxTokens - tokenCount);
   const etaSec = smooth > 0 ? remaining / smooth : 0;
@@ -32,4 +33,4 @@ export function PanelStats({ samples, tokenCount, maxTokens, elapsedMs }: Props)
       )}
     </div>
   );
-}
+});

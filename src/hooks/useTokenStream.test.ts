@@ -32,9 +32,10 @@ describe('useTokenStream', () => {
 
   it('emits tokens proportional to elapsed * speed', () => {
     const emitted: number[] = [];
+    const speedRef = { current: 40 };
     const { result } = renderHook(() =>
       useTokenStream({
-        speed: 40,
+        speedRef,
         onAdvance: (n) => emitted.push(n),
       }),
     );
@@ -49,8 +50,9 @@ describe('useTokenStream', () => {
 
   it('pause stops advancing', () => {
     const emitted: number[] = [];
+    const speedRef = { current: 100 };
     const { result } = renderHook(() =>
-      useTokenStream({ speed: 100, onAdvance: (n) => emitted.push(n) }),
+      useTokenStream({ speedRef, onAdvance: (n) => emitted.push(n) }),
     );
 
     act(() => result.current.start());
@@ -66,8 +68,9 @@ describe('useTokenStream', () => {
 
   it('resume continues from where paused (no catch-up)', () => {
     const emitted: number[] = [];
+    const speedRef = { current: 100 };
     const { result } = renderHook(() =>
-      useTokenStream({ speed: 100, onAdvance: (n) => emitted.push(n) }),
+      useTokenStream({ speedRef, onAdvance: (n) => emitted.push(n) }),
     );
 
     act(() => result.current.start());
@@ -84,8 +87,9 @@ describe('useTokenStream', () => {
 
   it('stop resets elapsed and token budget', () => {
     const emitted: number[] = [];
+    const speedRef = { current: 100 };
     const { result } = renderHook(() =>
-      useTokenStream({ speed: 100, onAdvance: (n) => emitted.push(n) }),
+      useTokenStream({ speedRef, onAdvance: (n) => emitted.push(n) }),
     );
 
     act(() => result.current.start());
@@ -98,5 +102,26 @@ describe('useTokenStream', () => {
     const total = emitted.reduce((a, b) => a + b, 0);
     expect(total).toBeGreaterThanOrEqual(7);
     expect(total).toBeLessThanOrEqual(9);
+  });
+
+  it('applies live speed changes without retroactive catch-up bursts', () => {
+    const emitted: number[] = [];
+    const speedRef = { current: 20 };
+    const { result } = renderHook(() =>
+      useTokenStream({ speedRef, onAdvance: (n) => emitted.push(n) }),
+    );
+
+    act(() => result.current.start());
+    act(() => drainFrames(10, 16));
+
+    act(() => {
+      speedRef.current = 120;
+    });
+    act(() => drainFrames(10, 16));
+
+    const total = emitted.reduce((a, b) => a + b, 0);
+
+    expect(total).toBeGreaterThanOrEqual(21);
+    expect(total).toBeLessThanOrEqual(23);
   });
 });

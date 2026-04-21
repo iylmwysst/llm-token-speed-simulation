@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { startTransition, useCallback, useEffect, useRef, useState } from 'react';
 import type { ArticleMarker, PanelConfig, PanelState, PanelStatus } from '../types';
 import { fetchRandomSummary } from '../lib/wikipedia';
 import { getEncoder, type Encoder } from '../lib/tokenizer';
@@ -24,6 +24,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
   const lastSampleAtRef = useRef(0);
   const sampleAccumRef = useRef(0);
   const tokensLenRef = useRef(0);
+  const liveSpeedRef = useRef(initialConfig.speed);
 
   useEffect(() => {
     tokensLenRef.current = tokens.length;
@@ -54,7 +55,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
     resume: resumeStream,
     stop: stopStream,
   } = useTokenStream({
-    speed: config.speed,
+    speedRef: liveSpeedRef,
     onAdvance: (add, elapsed) => {
       setElapsedMs(elapsed);
       emitTokens(add, elapsed);
@@ -157,7 +158,13 @@ export function usePanel({ id, config: initialConfig }: Init) {
   }, [restart]);
 
   const updateConfig = useCallback((patch: Partial<PanelConfig>) => {
-    setConfig((prev) => ({ ...prev, ...patch }));
+    if (typeof patch.speed === 'number') {
+      liveSpeedRef.current = patch.speed;
+    }
+
+    startTransition(() => {
+      setConfig((prev) => ({ ...prev, ...patch }));
+    });
   }, []);
 
   const state: PanelState = {

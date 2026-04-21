@@ -14,6 +14,7 @@ type Props = {
 
 export function Panel({ id, initialConfig, onClose }: Props) {
   const { state, actions } = usePanel({ id, config: initialConfig });
+  const { start, pause, resume, restart, newText, updateConfig } = actions;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -24,17 +25,17 @@ export function Panel({ id, initialConfig, onClose }: Props) {
       if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
       e.preventDefault();
       if (state.status === 'idle' || state.status === 'done' || state.status === 'error') {
-        void actions.start();
+        void start();
       } else if (state.status === 'running') {
-        actions.pause();
+        pause();
       } else if (state.status === 'paused') {
-        actions.resume();
+        resume();
       }
     };
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [id, state.status, actions]);
+  }, [id, pause, resume, start, state.status]);
 
   return (
     <motion.section
@@ -60,19 +61,19 @@ export function Panel({ id, initialConfig, onClose }: Props) {
         <PanelSidebar
           config={state.config}
           status={state.status}
-          onConfigChange={actions.updateConfig}
-          onStart={actions.start}
-          onPause={actions.pause}
-          onResume={actions.resume}
-          onRestart={actions.restart}
-          onNewText={actions.newText}
+          onConfigChange={updateConfig}
+          onStart={start}
+          onPause={pause}
+          onResume={resume}
+          onRestart={restart}
+          onNewText={newText}
         />
         <PanelText
           tokens={state.tokens}
           articles={state.articles}
           status={state.status}
           error={state.error}
-          onRetry={actions.start}
+          onRetry={start}
         />
       </div>
       <PanelStats

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, useEffect, useState, type ReactNode } from 'react';
 import type { PanelConfig, PanelStatus } from '../types';
 import { LanguagePicker } from './LanguagePicker';
 
@@ -16,7 +16,7 @@ type Props = {
 const isLockedForConfig = (status: PanelStatus) =>
   status === 'running' || status === 'paused' || status === 'fetching';
 
-export function PanelSidebar({
+export const PanelSidebar = memo(function PanelSidebar({
   config,
   status,
   onConfigChange,
@@ -28,6 +28,11 @@ export function PanelSidebar({
 }: Props) {
   const locked = isLockedForConfig(status);
   const playing = status === 'running';
+  const [speedDraft, setSpeedDraft] = useState(config.speed);
+
+  useEffect(() => {
+    setSpeedDraft(config.speed);
+  }, [config.speed]);
 
   return (
     <div className="flex w-56 shrink-0 flex-col gap-4 border-r border-border p-4">
@@ -39,13 +44,17 @@ export function PanelSidebar({
         />
       </Field>
 
-      <Field label={`Speed — ${config.speed} tok/s`}>
+      <Field label={`Speed — ${speedDraft} tok/s`}>
         <input
           type="range"
           min={1}
           max={500}
-          value={config.speed}
-          onChange={(e) => onConfigChange({ speed: Number(e.target.value) })}
+          value={speedDraft}
+          onChange={(e) => {
+            const nextSpeed = Number(e.target.value);
+            setSpeedDraft(nextSpeed);
+            onConfigChange({ speed: nextSpeed });
+          }}
           className="w-full accent-text"
           aria-label="Speed (tokens per second)"
         />
@@ -86,12 +95,12 @@ export function PanelSidebar({
           ↻
         </IconBtn>
         <IconBtn onClick={onNewText} label="New text">
-          🎲
+          <RandomizeIcon />
         </IconBtn>
       </div>
     </div>
   );
-}
+});
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -121,5 +130,26 @@ function IconBtn({
     >
       {children}
     </button>
+  );
+}
+
+function RandomizeIcon() {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="9.5" y="9.5" width="7" height="7" rx="1.5" />
+      <circle cx="7" cy="7" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="13" cy="13" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="16" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
   );
 }

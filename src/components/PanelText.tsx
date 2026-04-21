@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import type { ArticleMarker, PanelStatus } from '../types';
 
@@ -9,7 +10,7 @@ type Props = {
   onRetry: () => void;
 };
 
-export function PanelText({ tokens, articles, status, error, onRetry }: Props) {
+export const PanelText = memo(function PanelText({ tokens, articles, status, error, onRetry }: Props) {
   if (status === 'fetching' && tokens.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center p-6 font-mono text-sm text-text-subtle">
@@ -57,4 +58,4 @@ export function PanelText({ tokens, articles, status, error, onRetry }: Props) {
       {status === 'running' && <span className="cursor-blink">▌</span>}
     </div>
   );
-}
+});

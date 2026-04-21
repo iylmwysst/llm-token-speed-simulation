@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, type MutableRefObject } from 'react';
 
 type Options = {
-  speed: number;
+  speedRef: MutableRefObject<number>;
   onAdvance: (tokensToAdd: number, elapsedMs: number) => void;
   onFrame?: (elapsedMs: number) => void;
 };
 
-export function useTokenStream({ speed, onAdvance, onFrame }: Options) {
-  const speedRef = useRef(speed);
-  speedRef.current = speed;
-
+export function useTokenStream({ speedRef, onAdvance, onFrame }: Options) {
   const onAdvanceRef = useRef(onAdvance);
   onAdvanceRef.current = onAdvance;
 
@@ -19,7 +16,7 @@ export function useTokenStream({ speed, onAdvance, onFrame }: Options) {
   const rafRef = useRef<number | null>(null);
   const lastFrameRef = useRef(0);
   const elapsedRef = useRef(0);
-  const emittedRef = useRef(0);
+  const bufferedTokensRef = useRef(0);
   const runningRef = useRef(false);
 
   const tick = useCallback((now: number) => {
@@ -29,11 +26,11 @@ export function useTokenStream({ speed, onAdvance, onFrame }: Options) {
     lastFrameRef.current = now;
     elapsedRef.current += dt;
 
-    const expected = Math.floor((elapsedRef.current * speedRef.current) / 1000);
-    const add = expected - emittedRef.current;
+    bufferedTokensRef.current += (dt * speedRef.current) / 1000;
+    const add = Math.floor(bufferedTokensRef.current);
 
     if (add > 0) {
-      emittedRef.current = expected;
+      bufferedTokensRef.current -= add;
       onAdvanceRef.current(add, elapsedRef.current);
     }
 
@@ -66,7 +63,7 @@ export function useTokenStream({ speed, onAdvance, onFrame }: Options) {
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     rafRef.current = null;
     elapsedRef.current = 0;
-    emittedRef.current = 0;
+    bufferedTokensRef.current = 0;
   }, []);
 
   useEffect(() => () => stop(), [stop]);
