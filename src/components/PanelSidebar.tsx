@@ -14,7 +14,7 @@ type Props = {
 };
 
 const isLockedForConfig = (status: PanelStatus) =>
-  status === 'running' || status === 'paused' || status === 'fetching';
+  status === 'running' || status === 'fetching';
 
 const clampMaxTokens = (value: number) => Math.max(20, Math.min(5000, value));
 

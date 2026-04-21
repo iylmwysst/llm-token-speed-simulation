@@ -59,4 +59,21 @@ describe('PanelSidebar', () => {
 
     expect(onConfigChange).toHaveBeenCalledWith({ maxTokens: 20 });
   });
+
+  it('keeps language controls available while paused', () => {
+    render(
+      <PanelSidebar
+        config={{ lang: 'en', speed: 40, maxTokens: 500 }}
+        status="paused"
+        onConfigChange={() => {}}
+        onStart={() => {}}
+        onPause={() => {}}
+        onResume={() => {}}
+        onRestart={() => {}}
+        onNewText={() => {}}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: /language/i })).toBeEnabled();
+  });
 });
