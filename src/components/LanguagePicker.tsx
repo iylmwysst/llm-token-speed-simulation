@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Command } from 'cmdk';
 import { LANGUAGES, findLanguage } from '../lib/languages';
 
@@ -11,15 +11,33 @@ type Props = {
 export function LanguagePicker({ value, onChange, disabled }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const ignoreNextTriggerClickRef = useRef(false);
   const current = LANGUAGES.find((language) => language.code === value) ?? LANGUAGES[0];
   const list = findLanguage(query);
+
+  const selectLanguage = (code: string) => {
+    onChange(code);
+    setOpen(false);
+    setQuery('');
+  };
+
+  useEffect(() => {
+    setOpen(false);
+    setQuery('');
+  }, [value]);
 
   return (
     <div className="relative">
       <button
         type="button"
         disabled={disabled}
-        onClick={() => setOpen((isOpen) => !isOpen)}
+        onClick={() => {
+          if (ignoreNextTriggerClickRef.current) {
+            ignoreNextTriggerClickRef.current = false;
+            return;
+          }
+          setOpen((isOpen) => !isOpen);
+        }}
         className="flex w-full items-center gap-2 rounded-md border border-border bg-surface px-2 py-1.5 text-sm disabled:opacity-50"
         aria-label="Language"
       >
@@ -46,10 +64,15 @@ export function LanguagePicker({ value, onChange, disabled }: Props) {
                 <Command.Item
                   key={language.code}
                   value={language.code}
+                  onMouseDown={(event) => {
+                    ignoreNextTriggerClickRef.current = true;
+                    event.preventDefault();
+                  }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
                   onSelect={() => {
-                    onChange(language.code);
-                    setOpen(false);
-                    setQuery('');
+                    selectLanguage(language.code);
                   }}
                   className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm aria-selected:bg-border"
                 >
