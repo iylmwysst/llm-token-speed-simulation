@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import type { ArticleMarker, PanelStatus } from '../types';
 
@@ -11,9 +11,16 @@ type Props = {
 };
 
 export const PanelText = memo(function PanelText({ tokens, articles, status, error, onRetry }: Props) {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [articles.length, status, tokens.length]);
+
   if (status === 'fetching' && tokens.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center p-6 font-mono text-sm text-text-subtle">
+      <div className="flex h-[22rem] flex-1 items-center justify-center overflow-auto p-6 font-mono text-sm text-text-subtle md:h-[24rem]">
         Fetching article…
       </div>
     );
@@ -21,7 +28,7 @@ export const PanelText = memo(function PanelText({ tokens, articles, status, err
 
   if (status === 'error') {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 font-mono text-sm text-text-muted">
+      <div className="flex h-[22rem] flex-1 flex-col items-center justify-center gap-3 overflow-auto p-6 font-mono text-sm text-text-muted md:h-[24rem]">
         <div>⚠ Could not reach Wikipedia.</div>
         {error && <div className="text-xs text-text-subtle">{error}</div>}
         <button
@@ -38,7 +45,10 @@ export const PanelText = memo(function PanelText({ tokens, articles, status, err
   const articleBoundaries = new Map(articles.slice(1).map((article, index) => [article.startTokenIndex, index + 2]));
 
   return (
-    <div className="max-h-[60vh] flex-1 overflow-auto p-6 text-[15px] leading-relaxed">
+    <div
+      ref={scrollRef}
+      className="h-[22rem] flex-1 overflow-auto p-6 text-[15px] leading-relaxed md:h-[24rem]"
+    >
       {tokens.map((token, index) => (
         <span key={index}>
           {articleBoundaries.has(index) && (
