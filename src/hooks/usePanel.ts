@@ -48,7 +48,12 @@ export function usePanel({ id, config: initialConfig }: Init) {
     })();
   }, [config.lang]);
 
-  const stream = useTokenStream({
+  const {
+    start: startStream,
+    pause: pauseStream,
+    resume: resumeStream,
+    stop: stopStream,
+  } = useTokenStream({
     speed: config.speed,
     onAdvance: (add, elapsed) => {
       setElapsedMs(elapsed);
@@ -70,7 +75,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
       setTokens((prev) => {
         const next = prev.concat(pieces);
         if (next.length >= config.maxTokens) {
-          stream.stop();
+          stopStream();
           setStatus('done');
         }
         return next;
@@ -97,7 +102,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
         void prefetchNext();
       }
     },
-    [config.maxTokens, prefetchNext, stream],
+    [config.maxTokens, prefetchNext, stopStream],
   );
 
   const start = useCallback(async () => {
@@ -116,27 +121,27 @@ export function usePanel({ id, config: initialConfig }: Init) {
       lastSampleAtRef.current = 0;
       sampleAccumRef.current = 0;
       setStatus('running');
-      stream.start();
+      startStream();
     } catch (e) {
       setStatus('error');
       setError(e instanceof Error ? e.message : 'Unknown error');
     }
-  }, [config.lang, stream]);
+  }, [config.lang, startStream]);
 
   const pause = useCallback(() => {
     if (status !== 'running') return;
-    stream.pause();
+    pauseStream();
     setStatus('paused');
-  }, [status, stream]);
+  }, [pauseStream, status]);
 
   const resume = useCallback(() => {
     if (status !== 'paused') return;
-    stream.resume();
+    resumeStream();
     setStatus('running');
-  }, [status, stream]);
+  }, [resumeStream, status]);
 
   const restart = useCallback(() => {
-    stream.stop();
+    stopStream();
     pendingIdsRef.current = [];
     setTokens([]);
     setArticles([]);
@@ -145,7 +150,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
     setStatus('idle');
     setError(undefined);
     void start();
-  }, [stream, start]);
+  }, [start, stopStream]);
 
   const newText = useCallback(() => {
     restart();
@@ -167,7 +172,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
     error,
   };
 
-  useEffect(() => () => stream.stop(), [stream]);
+  useEffect(() => () => stopStream(), [stopStream]);
 
   return {
     state,
