@@ -46,8 +46,8 @@ export default function App({ embedded = false }: Props) {
     <div className={embedded ? 'bg-bg text-text' : 'min-h-screen bg-bg text-text'}>
       {!embedded && <Header theme={theme} onToggleTheme={toggleTheme} />}
       <main
-        className={`mx-auto flex max-w-4xl flex-col gap-6 px-6 ${
-          embedded ? 'pb-8 pt-0' : 'py-8'
+        className={`mx-auto flex flex-col gap-6 ${
+          embedded ? 'max-w-none px-0 pb-8 pt-0' : 'max-w-4xl px-6 py-8'
         }`}
       >
         <AnimatePresence initial={false}>

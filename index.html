@@ -110,16 +110,16 @@
       </div>
     </header>
 
-    <main class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-10">
-      <section class="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
-        <div class="space-y-5">
+    <main class="mx-auto flex max-w-6xl flex-col gap-14 px-6 py-10">
+      <section class="space-y-6">
+        <div class="max-w-4xl space-y-5">
           <p class="font-mono text-xs uppercase tracking-[0.28em] text-text-muted">
             Measure the feeling, not just the number
           </p>
-          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 class="max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
             Visualize how fast an LLM response feels at different tokens per second.
           </h1>
-          <p class="max-w-2xl text-lg leading-8 text-text-muted">
+          <p class="max-w-3xl text-lg leading-8 text-text-muted">
             Raw throughput numbers are hard to interpret. This simulator lets you watch token
             streaming on real text so you can judge readability, latency, and pacing before you ship
             a chat or writing experience.
@@ -139,22 +139,22 @@
             </a>
           </div>
         </div>
-        <div class="grid gap-4">
+        <div class="grid gap-4 md:grid-cols-3">
           <div class="rounded-2xl border border-border bg-surface p-5">
-            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">
-              Why teams use this
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Compare rates</p>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Run 20, 40, and 100 tok/s side by side instead of arguing from averages.
             </p>
-            <ul class="mt-4 space-y-3 text-sm leading-7 text-text-muted">
-              <li>Compare 20, 40, and 100 tokens per second without guessing.</li>
-              <li>See when an answer feels smooth, rushed, or frustratingly slow.</li>
-              <li>Explain performance tradeoffs to product, design, and engineering together.</li>
-            </ul>
           </div>
           <div class="rounded-2xl border border-border bg-surface p-5">
-            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">
-              Built by
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Watch pacing</p>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Spot chunking, sluggish flow, and readability problems before they reach users.
             </p>
-            <p class="mt-4 text-sm leading-7 text-text-muted">
+          </div>
+          <div class="rounded-2xl border border-border bg-surface p-5">
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Built by</p>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
               Research notes and implementation by
               <a
                 href="https://github.com/iylmwysst"
@@ -166,31 +166,39 @@
         </div>
       </section>
 
-      <section class="grid gap-6 md:grid-cols-3">
-        <article class="rounded-2xl border border-border bg-surface p-6">
-          <h2 class="text-lg font-medium tracking-tight">Test with realistic text</h2>
-          <p class="mt-3 text-sm leading-7 text-text-muted">
-            The tool streams tokenized Wikipedia summaries instead of fake placeholder text, which
-            makes pacing much easier to judge.
-          </p>
-        </article>
-        <article class="rounded-2xl border border-border bg-surface p-6">
-          <h2 class="text-lg font-medium tracking-tight">Tune for user perception</h2>
-          <p class="mt-3 text-sm leading-7 text-text-muted">
-            Token speed affects how responsive, confident, and readable a model feels. That is a UX
-            problem, not just an infrastructure metric.
-          </p>
-        </article>
-        <article class="rounded-2xl border border-border bg-surface p-6">
-          <h2 class="text-lg font-medium tracking-tight">Compare multiple panels</h2>
-          <p class="mt-3 text-sm leading-7 text-text-muted">
-            Run up to five panels side by side so teams can compare candidate response speeds in the
-            same session.
-          </p>
-        </article>
+      <section class="space-y-5" id="simulator">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div class="max-w-3xl space-y-3">
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Live tool</p>
+            <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+              Put the simulator front and center.
+            </h2>
+            <p class="text-base leading-8 text-text-muted">
+              Compare token speed on real streaming text, adjust the rate live, and open multiple
+              panels when you need a direct side-by-side benchmark.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3 text-sm">
+            <a
+              href="/llm-token-speed-simulation/what-is-token-per-second/"
+              class="rounded-full border border-border px-4 py-2 no-underline transition-colors hover:bg-surface"
+            >
+              What is token per second?
+            </a>
+            <a
+              href="#guides"
+              class="rounded-full border border-border px-4 py-2 no-underline transition-colors hover:bg-surface"
+            >
+              More guides
+            </a>
+          </div>
+        </div>
+        <div class="rounded-[2rem] border border-border bg-surface p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.02)] sm:p-6">
+          <div id="root" data-embedded="true"></div>
+        </div>
       </section>
 
-      <section class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+      <section class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div class="space-y-5">
           <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">What to watch</p>
           <h2 class="text-3xl font-semibold tracking-tight">Token speed is really a pacing problem.</h2>
@@ -199,28 +207,26 @@
             prints text in chunks that break reading flow. Teams often optimize for backend numbers
             without seeing what the end user actually experiences.
           </p>
-          <p class="text-base leading-8 text-text-muted">
-            Use the simulator to answer practical questions: Does 20 tok/s feel patient or sluggish?
-            Is 40 tok/s enough for chat? Does 100 tok/s make long answers easier to skim or just too
-            fast to read in place?
-          </p>
         </div>
-        <div class="space-y-4 rounded-3xl border border-border bg-surface p-6" id="simulator">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">
-                Live tool
-              </p>
-              <h2 class="mt-2 text-2xl font-semibold tracking-tight">Launch the token speed simulator</h2>
-            </div>
-            <a
-              href="#guides"
-              class="rounded-full border border-border px-4 py-2 text-sm no-underline transition-colors hover:bg-bg"
-            >
-              Read the guides first
-            </a>
-          </div>
-          <div id="root" data-embedded="true"></div>
+        <div class="grid gap-4 md:grid-cols-3">
+          <article class="rounded-2xl border border-border bg-surface p-6 md:col-span-1">
+            <h2 class="text-lg font-medium tracking-tight">Realistic text</h2>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Stream tokenized Wikipedia summaries instead of fake placeholder text.
+            </p>
+          </article>
+          <article class="rounded-2xl border border-border bg-surface p-6 md:col-span-1">
+            <h2 class="text-lg font-medium tracking-tight">UX-first benchmark</h2>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Judge latency, rhythm, and readability as users would actually feel them.
+            </p>
+          </article>
+          <article class="rounded-2xl border border-border bg-surface p-6 md:col-span-1">
+            <h2 class="text-lg font-medium tracking-tight">Up to five panels</h2>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Stack multiple runs when you need direct comparison instead of isolated tests.
+            </p>
+          </article>
         </div>
       </section>
 
