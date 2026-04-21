@@ -16,6 +16,8 @@ type Props = {
 const isLockedForConfig = (status: PanelStatus) =>
   status === 'running' || status === 'paused' || status === 'fetching';
 
+const clampMaxTokens = (value: number) => Math.max(20, Math.min(5000, value));
+
 export const PanelSidebar = memo(function PanelSidebar({
   config,
   status,
@@ -29,10 +31,24 @@ export const PanelSidebar = memo(function PanelSidebar({
   const locked = isLockedForConfig(status);
   const playing = status === 'running';
   const [speedDraft, setSpeedDraft] = useState(config.speed);
+  const [maxTokensDraft, setMaxTokensDraft] = useState(String(config.maxTokens));
 
   useEffect(() => {
     setSpeedDraft(config.speed);
   }, [config.speed]);
+
+  useEffect(() => {
+    setMaxTokensDraft(String(config.maxTokens));
+  }, [config.maxTokens]);
+
+  const commitMaxTokens = () => {
+    const parsed = Number(maxTokensDraft);
+    const nextValue = Number.isFinite(parsed) && parsed > 0 ? clampMaxTokens(parsed) : config.maxTokens;
+    setMaxTokensDraft(String(nextValue));
+    if (nextValue !== config.maxTokens) {
+      onConfigChange({ maxTokens: nextValue });
+    }
+  };
 
   return (
     <div className="flex w-56 shrink-0 flex-col gap-4 border-r border-border p-4">
@@ -62,15 +78,26 @@ export const PanelSidebar = memo(function PanelSidebar({
 
       <Field label="Max output">
         <input
-          type="number"
-          min={20}
-          max={5000}
-          value={config.maxTokens}
-          onChange={(e) =>
-            onConfigChange({
-              maxTokens: Math.max(20, Math.min(5000, Number(e.target.value) || 20)),
-            })
-          }
+          type="text"
+          inputMode="numeric"
+          value={maxTokensDraft}
+          onChange={(e) => {
+            const nextValue = e.target.value;
+            if (/^\d*$/.test(nextValue)) {
+              setMaxTokensDraft(nextValue);
+            }
+          }}
+          onBlur={commitMaxTokens}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              commitMaxTokens();
+              e.currentTarget.blur();
+            }
+            if (e.key === 'Escape') {
+              setMaxTokensDraft(String(config.maxTokens));
+              e.currentTarget.blur();
+            }
+          }}
           disabled={locked}
           className="w-full rounded-md border border-border bg-surface px-2 py-1 text-sm disabled:opacity-50"
           aria-label="Maximum output tokens"
