@@ -6,7 +6,7 @@ const html = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
-  base: '/token-simulation/',
+  base: '/llm-token-speed-simulation/',
   build: {
     rollupOptions: {
       input: [
