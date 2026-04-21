@@ -25,16 +25,20 @@ export function usePanel({ id, config: initialConfig }: Init) {
   const sampleAccumRef = useRef(0);
   const tokensLenRef = useRef(0);
   const liveSpeedRef = useRef(initialConfig.speed);
+  const runVersionRef = useRef(0);
 
   useEffect(() => {
     tokensLenRef.current = tokens.length;
   }, [tokens.length]);
 
   const prefetchNext = useCallback(async () => {
-    nextArticlePromiseRef.current = (async () => {
+    const runVersion = runVersionRef.current;
+    let prefetchPromise: Promise<void> | null = null;
+    prefetchPromise = (async () => {
       try {
         const { title, extract } = await fetchRandomSummary(config.lang);
         const enc = encoderRef.current ?? (await getEncoder());
+        if (runVersion !== runVersionRef.current) return;
         encoderRef.current = enc;
         const ids = enc.encode(extract);
         setArticles((prev) => [
@@ -44,9 +48,13 @@ export function usePanel({ id, config: initialConfig }: Init) {
         pendingIdsRef.current.push(...ids);
       } catch {
       } finally {
-        nextArticlePromiseRef.current = null;
+        if (nextArticlePromiseRef.current === prefetchPromise) {
+          nextArticlePromiseRef.current = null;
+        }
       }
     })();
+
+    nextArticlePromiseRef.current = prefetchPromise;
   }, [config.lang]);
 
   const {
@@ -61,6 +69,24 @@ export function usePanel({ id, config: initialConfig }: Init) {
       emitTokens(add, elapsed);
     },
   });
+
+  const resetPanel = useCallback(
+    (nextStatus: PanelStatus = 'idle') => {
+      stopStream();
+      runVersionRef.current += 1;
+      pendingIdsRef.current = [];
+      nextArticlePromiseRef.current = null;
+      setTokens([]);
+      setArticles([]);
+      setElapsedMs(0);
+      setSamples([]);
+      lastSampleAtRef.current = 0;
+      sampleAccumRef.current = 0;
+      setError(undefined);
+      setStatus(nextStatus);
+    },
+    [stopStream],
+  );
 
   const emitTokens = useCallback(
     (add: number, elapsed: number) => {
@@ -107,12 +133,14 @@ export function usePanel({ id, config: initialConfig }: Init) {
   );
 
   const start = useCallback(async () => {
+    const runVersion = ++runVersionRef.current;
     setError(undefined);
     setStatus('fetching');
     try {
       const enc = await getEncoder();
-      encoderRef.current = enc;
       const { title, extract } = await fetchRandomSummary(config.lang);
+      if (runVersion !== runVersionRef.current) return;
+      encoderRef.current = enc;
       const ids = enc.encode(extract);
       pendingIdsRef.current = ids;
       setArticles([{ title, startTokenIndex: 0 }]);
@@ -124,6 +152,7 @@ export function usePanel({ id, config: initialConfig }: Init) {
       setStatus('running');
       startStream();
     } catch (e) {
+      if (runVersion !== runVersionRef.current) return;
       setStatus('error');
       setError(e instanceof Error ? e.message : 'Unknown error');
     }
@@ -142,30 +171,35 @@ export function usePanel({ id, config: initialConfig }: Init) {
   }, [resumeStream, status]);
 
   const restart = useCallback(() => {
-    stopStream();
-    pendingIdsRef.current = [];
-    setTokens([]);
-    setArticles([]);
-    setElapsedMs(0);
-    setSamples([]);
-    setStatus('idle');
-    setError(undefined);
+    resetPanel();
     void start();
-  }, [start, stopStream]);
+  }, [resetPanel, start]);
 
   const newText = useCallback(() => {
     restart();
   }, [restart]);
 
-  const updateConfig = useCallback((patch: Partial<PanelConfig>) => {
-    if (typeof patch.speed === 'number') {
-      liveSpeedRef.current = patch.speed;
-    }
+  const updateConfig = useCallback(
+    (patch: Partial<PanelConfig>) => {
+      if (typeof patch.speed === 'number') {
+        liveSpeedRef.current = patch.speed;
+      }
 
-    startTransition(() => {
-      setConfig((prev) => ({ ...prev, ...patch }));
-    });
-  }, []);
+      if (
+        typeof patch.lang === 'string' &&
+        patch.lang !== config.lang &&
+        status !== 'running' &&
+        status !== 'fetching'
+      ) {
+        resetPanel();
+      }
+
+      startTransition(() => {
+        setConfig((prev) => ({ ...prev, ...patch }));
+      });
+    },
+    [config.lang, resetPanel, status],
+  );
 
   const state: PanelState = {
     id,
