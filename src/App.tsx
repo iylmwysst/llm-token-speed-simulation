@@ -60,7 +60,7 @@ export default function App({ embedded = false }: Props) {
             />
           ))}
         </AnimatePresence>
-        <div className="flex justify-center">
+        <div className={`flex justify-center ${panels.length === 0 ? 'pt-8' : ''}`}>
           <button
             type="button"
             onClick={addPanel}

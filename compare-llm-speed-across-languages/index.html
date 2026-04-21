@@ -3,24 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What Is Token Per Second? A Practical Guide for LLM UX</title>
+    <title>Compare LLM Token Speed Across Languages</title>
     <meta
       name="description"
-      content="Learn what token per second means, why it matters for LLM user experience, and how to interpret the metric beyond backend benchmarks."
+      content="Learn why the same LLM tokens-per-second setting can feel different across languages and how to test multilingual streaming UX with a simulator."
     />
     <link
       rel="canonical"
-      href="https://iylmwysst.github.io/llm-token-speed-simulation/what-is-token-per-second/"
+      href="https://iylmwysst.github.io/llm-token-speed-simulation/compare-llm-speed-across-languages/"
     />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="What Is Token Per Second? A Practical Guide for LLM UX" />
+    <meta property="og:title" content="Compare LLM Token Speed Across Languages" />
     <meta
       property="og:description"
-      content="A plain-English explanation of token throughput, readability, and streaming UX."
+      content="See why the same token speed can feel different in English, Thai, Japanese, and other languages."
     />
     <meta
       property="og:url"
-      content="https://iylmwysst.github.io/llm-token-speed-simulation/what-is-token-per-second/"
+      content="https://iylmwysst.github.io/llm-token-speed-simulation/compare-llm-speed-across-languages/"
     />
     <meta
       property="og:image"
@@ -32,7 +32,7 @@
       {
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "What Is Token Per Second? A Practical Guide for LLM UX",
+        "headline": "Compare LLM Token Speed Across Languages",
         "author": {
           "@type": "Person",
           "name": "Pipat Khambun",
@@ -42,9 +42,9 @@
           "@type": "Person",
           "name": "Pipat Khambun"
         },
-        "datePublished": "2026-04-21",
+        "datePublished": "2026-04-22",
         "dateModified": "2026-04-22",
-        "mainEntityOfPage": "https://iylmwysst.github.io/llm-token-speed-simulation/what-is-token-per-second/"
+        "mainEntityOfPage": "https://iylmwysst.github.io/llm-token-speed-simulation/compare-llm-speed-across-languages/"
       }
     </script>
     <script type="module" src="/src/theme-init.ts"></script>
@@ -60,8 +60,8 @@
           <nav class="hidden gap-4 md:flex">
             <a href="/llm-token-speed-simulation/" class="hover:text-text">Home</a>
             <a href="/llm-token-speed-simulation/#simulator" class="hover:text-text">Simulator</a>
+            <a href="/llm-token-speed-simulation/what-is-token-per-second/" class="hover:text-text">What Is TPS</a>
             <a href="/llm-token-speed-simulation/how-fast-is-40-tokens-per-second/" class="hover:text-text">40 TPS</a>
-            <a href="/llm-token-speed-simulation/compare-llm-speed-across-languages/" class="hover:text-text">Languages</a>
           </nav>
           <button
             type="button"
@@ -80,14 +80,14 @@
     <main class="mx-auto max-w-5xl px-6 py-10">
       <article class="space-y-8">
         <header class="space-y-4">
-          <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Guide</p>
+          <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Comparison guide</p>
           <h1 class="max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            What is token per second?
+            Compare LLM token speed across languages
           </h1>
           <p class="max-w-4xl text-lg leading-8 text-text-muted">
-            Token per second is the speed at which an LLM streams output. It sounds like an
-            infrastructure metric, but in practice it is one of the biggest drivers of perceived AI
-            quality.
+            The same tokens-per-second setting can feel very different in English, Thai, Japanese, and
+            other languages. That is why multilingual simulation is useful when you care about actual
+            reading experience, not just backend throughput.
           </p>
           <p class="text-sm text-text-muted">
             By
@@ -99,75 +99,71 @@
         </header>
 
         <section class="space-y-4 rounded-2xl border border-border bg-surface p-6">
-          <h2 class="text-2xl font-medium tracking-tight">Short answer</h2>
+          <h2 class="text-2xl font-medium tracking-tight">Short version</h2>
           <p class="text-base leading-8 text-text-muted">
-            A token is a chunk of text used by a language model. “Token per second” measures how many
-            of those chunks the model can send to the user each second while it is generating a
-            response.
-          </p>
-          <p class="text-base leading-8 text-text-muted">
-            The reason this matters is simple: users do not experience “throughput.” They experience
-            waiting, reading, and interruptions. Token speed shapes all three.
+            A number like 40 tok/s only tells you how quickly the model is emitting tokens. It does
+            not tell you how readable the stream will feel once those tokens become visible text in a
+            specific language.
           </p>
         </section>
 
         <section class="space-y-4">
-          <h2 class="text-2xl font-medium tracking-tight">Why this metric matters</h2>
+          <h2 class="text-2xl font-medium tracking-tight">Why equal tok/s can feel unequal</h2>
           <p class="text-base leading-8 text-text-muted">
-            Teams often focus on first-token latency because it is easy to discuss. But once the model
-            starts streaming, the rest of the experience depends heavily on steady output speed. A low
-            token rate can make a good answer feel hesitant. A bursty stream can make an otherwise fast
-            model feel uneven or unstable.
+            Languages differ in script density, punctuation habits, spacing rules, and how often a
+            single visible word is assembled across multiple tokens. That changes the rhythm people see
+            while text streams onto the page.
           </p>
           <p class="text-base leading-8 text-text-muted">
-            In chat, token speed affects perceived responsiveness. In coding tools, it changes how long
-            users stare at incomplete thoughts. In writing assistants, it determines whether people can
-            comfortably read as the answer appears.
+            In one language, the output may appear to unfold smoothly enough for live reading. In
+            another, the exact same tok/s rate may feel choppier, denser, or harder to follow line by
+            line.
           </p>
         </section>
 
         <section class="grid gap-5 md:grid-cols-3">
           <div class="rounded-2xl border border-border bg-surface p-6">
-            <h3 class="text-lg font-medium tracking-tight">Low token speed</h3>
+            <h3 class="text-lg font-medium tracking-tight">Spacing and word boundaries</h3>
             <p class="mt-3 text-sm leading-7 text-text-muted">
-              Often feels deliberate, but can become frustrating on longer answers because users spend
-              too much time waiting for the sentence to complete.
+              Languages with obvious word spacing can feel easier to track mid-stream than scripts
+              where phrasing appears in denser visual chunks.
             </p>
           </div>
           <div class="rounded-2xl border border-border bg-surface p-6">
-            <h3 class="text-lg font-medium tracking-tight">Moderate token speed</h3>
+            <h3 class="text-lg font-medium tracking-tight">Token-to-text rhythm</h3>
             <p class="mt-3 text-sm leading-7 text-text-muted">
-              Usually feels natural for chat and general assistant use. It gives people enough flow to
-              stay engaged without overwhelming them.
+              The user sees characters and phrases, not token IDs. Different languages reveal those
+              visible units at different rhythms even when the raw token count is identical.
             </p>
           </div>
           <div class="rounded-2xl border border-border bg-surface p-6">
-            <h3 class="text-lg font-medium tracking-tight">High token speed</h3>
+            <h3 class="text-lg font-medium tracking-tight">Reading comfort</h3>
             <p class="mt-3 text-sm leading-7 text-text-muted">
-              Feels impressive, but can make dense output hard to read as it streams. Great for
-              perceived speed, not always ideal for in-place comprehension.
+              A speed that feels responsive for English support chat may feel too abrupt or too slow
+              for other reading contexts and languages.
             </p>
           </div>
         </section>
 
         <section class="space-y-4">
-          <h2 class="text-2xl font-medium tracking-tight">How to interpret token speed correctly</h2>
+          <h2 class="text-2xl font-medium tracking-tight">How to test this well</h2>
           <p class="text-base leading-8 text-text-muted">
-            Do not treat tokens per second as a universal quality score. A model that streams at 40
-            tok/s with consistent pacing may feel better than one that averages 80 tok/s but prints in
-            unpredictable bursts. Smoothness matters. Reading context matters. Output length matters.
+            Run the same speed setting on multiple languages, keep the prompt type comparable, and
+            watch how easily someone can read while the answer is still appearing. That reveals much
+            more than a single benchmark number.
           </p>
           <p class="text-base leading-8 text-text-muted">
-            The practical question is not “what is the fastest number?” It is “what speed creates the
-            best experience for this product and this kind of answer?”
+            The practical question is not just “how fast is the model?” It is “how readable does this
+            feel for the audience and language mix our product actually serves?”
           </p>
         </section>
 
         <section class="space-y-4 rounded-2xl border border-border bg-surface p-6">
-          <h2 class="text-2xl font-medium tracking-tight">Use the simulator instead of guessing</h2>
+          <h2 class="text-2xl font-medium tracking-tight">Use the simulator as a UX comparison tool</h2>
           <p class="text-base leading-8 text-text-muted">
-            If your team is debating whether 20, 40, or 100 tok/s is good enough, the fastest way to
-            align is to watch the text stream. That is the point of this project.
+            Set one panel to English, another to Thai or Japanese, keep the tok/s value the same, and
+            compare the pacing visually. This is where multilingual support becomes more than a nice
+            feature. It becomes a product decision tool.
           </p>
           <div class="flex flex-wrap gap-3">
             <a
@@ -177,10 +173,10 @@
               Open the simulator
             </a>
             <a
-              href="/llm-token-speed-simulation/compare-llm-speed-across-languages/"
+              href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
               class="rounded-full border border-border px-4 py-2 text-sm no-underline transition-colors hover:bg-bg"
             >
-              Compare languages
+              Read TPS vs WPM
             </a>
           </div>
         </section>
@@ -190,8 +186,8 @@
     <footer class="border-t border-border">
       <div class="mx-auto flex max-w-4xl flex-col gap-3 px-6 py-6 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
         <p>
-          Written by <span class="font-semibold text-text">Pipat Khambun</span> for teams
-          evaluating LLM response UX.
+          Written by <span class="font-semibold text-text">Pipat Khambun</span> for teams testing
+          multilingual LLM UX.
         </p>
         <a href="/llm-token-speed-simulation/" class="hover:text-text">Back to simulator</a>
       </div>

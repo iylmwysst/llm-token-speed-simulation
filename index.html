@@ -3,17 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LLM Token Speed Simulator: Visualize Tokens Per Second</title>
+    <title>LLM Token Speed Simulator: Compare Streaming Speed Across Languages</title>
     <meta
       name="description"
-      content="See what 20, 40, or 100 tokens per second actually feels like. Use this LLM token speed simulator to compare streaming speed, readability, and response pacing."
+      content="See what 20, 40, or 100 tokens per second actually feels like on real text. Compare LLM streaming speed, readability, and pacing across multiple languages."
     />
     <link rel="canonical" href="https://iylmwysst.github.io/llm-token-speed-simulation/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="LLM Token Speed Simulator: Visualize Tokens Per Second" />
+    <meta
+      property="og:title"
+      content="LLM Token Speed Simulator: Compare Streaming Speed Across Languages"
+    />
     <meta
       property="og:description"
-      content="Compare LLM response speed visually and learn how token throughput changes the reading experience."
+      content="Compare LLM response speed on real text and see how the same tokens-per-second setting feels across multiple languages."
     />
     <meta
       property="og:url"
@@ -26,11 +29,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="LLM Token Speed Simulator: Visualize Tokens Per Second"
+      content="LLM Token Speed Simulator: Compare Streaming Speed Across Languages"
     />
     <meta
       name="twitter:description"
-      content="Understand AI response speed with a visual token streaming simulator and plain-English guides."
+      content="Understand AI response speed with a visual token streaming simulator for real text and multiple languages."
     />
     <meta
       name="twitter:image"
@@ -53,7 +56,7 @@
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Web",
         "url": "https://iylmwysst.github.io/llm-token-speed-simulation/",
-        "description": "A browser-based simulator for visualizing LLM token speed and comparing tokens-per-second pacing on real text.",
+        "description": "A browser-based simulator for visualizing LLM token speed, real-text pacing, and cross-language reading feel.",
         "author": {
           "@type": "Person",
           "name": "Pipat Khambun",
@@ -86,9 +89,9 @@
               >40 TPS</a
             >
             <a
-              href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+              href="/llm-token-speed-simulation/compare-llm-speed-across-languages/"
               class="hover:text-text"
-              >TPS vs WPM</a
+              >Languages</a
             >
           </nav>
           <button
@@ -117,12 +120,12 @@
             Measure the feeling, not just the number
           </p>
           <h1 class="max-w-5xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            Visualize how fast an LLM response feels at different tokens per second.
+            Simulate how fast an LLM response feels on real text across languages.
           </h1>
           <p class="max-w-4xl text-lg leading-8 text-text-muted">
             Raw throughput numbers are hard to interpret. This simulator lets you watch token
             streaming on real text so you can judge readability, latency, and pacing before you ship
-            a chat or writing experience.
+            a chat, coding, or writing experience in English, Thai, Japanese, and more.
           </p>
         </div>
       </section>
@@ -140,7 +143,9 @@
           <p class="text-base leading-8 text-text-muted">
             A model can have good median latency and still feel slow if the stream stalls, bursts, or
             prints text in chunks that break reading flow. Teams often optimize for backend numbers
-            without seeing what the end user actually experiences.
+            without seeing what the end user actually experiences. That gets even trickier across
+            languages, where scripts, spacing, and reading rhythm can change how the same tok/s setting
+            feels.
           </p>
         </div>
         <div class="grid gap-4 md:grid-cols-3">
@@ -157,9 +162,10 @@
             </p>
           </article>
           <article class="rounded-2xl border border-border bg-surface p-6 md:col-span-1">
-            <h2 class="text-lg font-medium tracking-tight">Up to five panels</h2>
+            <h2 class="text-lg font-medium tracking-tight">Multiple languages</h2>
             <p class="mt-3 text-sm leading-7 text-text-muted">
-              Stack multiple runs when you need direct comparison instead of isolated tests.
+              Compare how the same generation speed lands across different languages instead of testing
+              only English.
             </p>
           </article>
         </div>
@@ -168,13 +174,13 @@
       <section id="guides" class="space-y-6">
         <div class="space-y-3">
           <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Guides</p>
-          <h2 class="text-3xl font-semibold tracking-tight">Guides for deeper context</h2>
+          <h2 class="text-3xl font-semibold tracking-tight">Guides and comparisons for deeper context</h2>
           <p class="max-w-4xl text-base leading-8 text-text-muted">
             Plain-English explainers for the token-speed questions teams ask when tuning a chat,
-            coding, or writing experience.
+            coding, or writing experience, including how speed perception shifts across languages.
           </p>
         </div>
-        <div class="grid gap-5 md:grid-cols-3">
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           <a
             href="/llm-token-speed-simulation/what-is-token-per-second/"
             class="rounded-2xl border border-border bg-surface p-6 no-underline transition-transform hover:-translate-y-0.5"
@@ -198,10 +204,22 @@
             </p>
           </a>
           <a
-            href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+            href="/llm-token-speed-simulation/compare-llm-speed-across-languages/"
             class="rounded-2xl border border-border bg-surface p-6 no-underline transition-transform hover:-translate-y-0.5"
           >
             <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Guide 03</p>
+            <h3 class="mt-3 text-xl font-medium tracking-tight text-text">
+              Compare LLM speed across languages
+            </h3>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Why the same tok/s setting can feel very different in English, Thai, Japanese, and more.
+            </p>
+          </a>
+          <a
+            href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+            class="rounded-2xl border border-border bg-surface p-6 no-underline transition-transform hover:-translate-y-0.5"
+          >
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Guide 04</p>
             <h3 class="mt-3 text-xl font-medium tracking-tight text-text">
               Tokens per second vs words per minute
             </h3>
@@ -243,6 +261,16 @@
             <p class="mt-3 text-sm leading-7 text-text-muted">
               No. It is intentionally vendor-neutral. The goal is to help teams reason about pacing
               and UX before tying the experience to a specific model name or deployment setup.
+            </p>
+          </article>
+          <article class="rounded-2xl border border-border bg-surface p-6">
+            <h3 class="text-lg font-medium tracking-tight">
+              Why does language matter if the token speed number is the same?
+            </h3>
+            <p class="mt-3 text-sm leading-7 text-text-muted">
+              Reading comfort depends on script density, punctuation rhythm, and how words appear while
+              streaming. The same tok/s number can feel calmer in one language and more abrupt in
+              another.
             </p>
           </article>
         </div>

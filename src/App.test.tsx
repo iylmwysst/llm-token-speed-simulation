@@ -53,4 +53,14 @@ describe('App theme toggle', () => {
     expect(screen.getAllByRole('region')).toHaveLength(5);
     expect(screen.getByRole('button', { name: /max 5 panels/i })).toBeDisabled();
   });
+
+  it('adds matching top spacing above the add button when all panels are closed', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /close panel/i }));
+
+    const addButton = screen.getByRole('button', { name: /\+ add panel/i });
+    expect(addButton.parentElement).toHaveClass('pt-8');
+  });
 });
