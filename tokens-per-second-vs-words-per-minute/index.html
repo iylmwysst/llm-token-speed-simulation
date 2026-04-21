@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokens Per Second vs Words Per Minute</title>
+    <meta
+      name="description"
+      content="Understand the difference between tokens per second and words per minute so product and engineering teams can discuss LLM speed in a shared language."
+    />
+    <link
+      rel="canonical"
+      href="https://iylmwysst.github.io/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Tokens Per Second vs Words Per Minute" />
+    <meta
+      property="og:description"
+      content="A practical translation layer between model throughput and human reading pace."
+    />
+    <meta
+      property="og:url"
+      content="https://iylmwysst.github.io/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+    />
+    <meta
+      property="og:image"
+      content="https://iylmwysst.github.io/llm-token-speed-simulation/og-image.svg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Tokens Per Second vs Words Per Minute",
+        "author": {
+          "@type": "Person",
+          "name": "iylmwysst",
+          "url": "https://github.com/iylmwysst"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "iylmwysst"
+        },
+        "datePublished": "2026-04-21",
+        "dateModified": "2026-04-21",
+        "mainEntityOfPage": "https://iylmwysst.github.io/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+      }
+    </script>
+    <script type="module" src="/src/theme-init.ts"></script>
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body class="bg-bg text-text">
+    <header class="border-b border-border">
+      <div class="mx-auto flex max-w-4xl items-center justify-between gap-4 px-6 py-4">
+        <a href="/llm-token-speed-simulation/" class="text-xl font-medium tracking-tight text-text no-underline">
+          LLM Token Speed Simulation
+        </a>
+        <div class="flex items-center gap-4 text-sm text-text-muted">
+          <nav class="hidden gap-4 md:flex">
+            <a href="/llm-token-speed-simulation/" class="hover:text-text">Home</a>
+            <a href="/llm-token-speed-simulation/#simulator" class="hover:text-text">Simulator</a>
+            <a href="/llm-token-speed-simulation/what-is-token-per-second/" class="hover:text-text">What Is TPS</a>
+            <a href="/llm-token-speed-simulation/how-fast-is-40-tokens-per-second/" class="hover:text-text">40 TPS</a>
+          </nav>
+          <button
+            type="button"
+            data-theme-toggle
+            class="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-sm transition-colors hover:text-text"
+          >
+            <span class="relative flex h-6 w-11 items-center rounded-full border border-border bg-bg px-1">
+              <span data-theme-knob class="absolute h-4 w-4 rounded-full bg-text transition-transform duration-200"></span>
+            </span>
+            <span data-theme-state>Light</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-4xl px-6 py-10">
+      <article class="space-y-8">
+        <header class="space-y-4">
+          <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">Translation guide</p>
+          <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            Tokens per second vs words per minute
+          </h1>
+          <p class="max-w-3xl text-lg leading-8 text-text-muted">
+            Tokens per second measures model output. Words per minute describes human reading speed.
+            They are related, but they are not interchangeable.
+          </p>
+          <p class="text-sm text-text-muted">
+            By
+            <a href="https://github.com/iylmwysst" class="underline decoration-border underline-offset-4"
+              >iylmwysst</a
+            >
+            · Updated April 21, 2026
+          </p>
+        </header>
+
+        <section class="space-y-4 rounded-2xl border border-border bg-surface p-6">
+          <h2 class="text-2xl font-medium tracking-tight">The core difference</h2>
+          <p class="text-base leading-8 text-text-muted">
+            Tokens are machine-facing units. Words are human-facing units. A single token may be part
+            of a word, a whole word, punctuation, or whitespace. That is why you should never convert
+            TPS to WPM as if they were directly equivalent.
+          </p>
+        </section>
+
+        <section class="space-y-4">
+          <h2 class="text-2xl font-medium tracking-tight">Why teams confuse the two</h2>
+          <p class="text-base leading-8 text-text-muted">
+            Product managers, designers, and stakeholders usually think in reading pace. Engineers and
+            inference teams think in token throughput. Both are valid, but they answer different
+            questions.
+          </p>
+          <p class="text-base leading-8 text-text-muted">
+            If you want a shared language, the best move is not to overfit a conversion formula. It is
+            to combine throughput numbers with a visual simulator so everyone can see how the answer
+            actually unfolds on screen.
+          </p>
+        </section>
+
+        <section class="grid gap-5 md:grid-cols-2">
+          <div class="rounded-2xl border border-border bg-surface p-6">
+            <h3 class="text-lg font-medium tracking-tight">Tokens per second answers:</h3>
+            <ul class="mt-3 space-y-2 text-sm leading-7 text-text-muted">
+              <li>How fast is the model streaming output?</li>
+              <li>How expensive is the answer to generate in time?</li>
+              <li>How responsive does the system feel after first token?</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-border bg-surface p-6">
+            <h3 class="text-lg font-medium tracking-tight">Words per minute answers:</h3>
+            <ul class="mt-3 space-y-2 text-sm leading-7 text-text-muted">
+              <li>Can a person comfortably read what is appearing?</li>
+              <li>Will dense text outpace comprehension?</li>
+              <li>Does the UI encourage live reading or completion-first reading?</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="space-y-4">
+          <h2 class="text-2xl font-medium tracking-tight">A better way to use both metrics</h2>
+          <p class="text-base leading-8 text-text-muted">
+            Use TPS to compare model and system performance. Use WPM as a mental model for live
+            readability. Then test the combined experience in the browser, because streaming UX depends
+            on chunking, pauses, punctuation, and answer density just as much as it depends on average
+            speed.
+          </p>
+          <p class="text-base leading-8 text-text-muted">
+            In other words, throughput tells you what your stack can do. Reading pace tells you what
+            your user can absorb. Great product decisions respect both constraints.
+          </p>
+        </section>
+
+        <section class="space-y-4 rounded-2xl border border-border bg-surface p-6">
+          <h2 class="text-2xl font-medium tracking-tight">Turn the metric into a team conversation</h2>
+          <p class="text-base leading-8 text-text-muted">
+            If a stakeholder asks whether 40 tok/s is “fast,” do not stop at the number. Show the
+            stream, let them read it, and compare it with slower and faster settings on the same text.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a
+              href="/llm-token-speed-simulation/#simulator"
+              class="rounded-full border border-text bg-text px-4 py-2 text-sm text-bg no-underline"
+            >
+              Test token speed visually
+            </a>
+            <a
+              href="/llm-token-speed-simulation/what-is-token-per-second/"
+              class="rounded-full border border-border px-4 py-2 text-sm no-underline transition-colors hover:bg-bg"
+            >
+              Read the metric explainer
+            </a>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <footer class="border-t border-border">
+      <div class="mx-auto flex max-w-4xl flex-col gap-3 px-6 py-6 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
+        <p>Written to help product and engineering teams speak the same speed language.</p>
+        <a href="/llm-token-speed-simulation/" class="hover:text-text">Back to simulator</a>
+      </div>
+    </footer>
+  </body>
+</html>

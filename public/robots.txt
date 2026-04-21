@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iylmwysst.github.io/llm-token-speed-simulation/sitemap.xml

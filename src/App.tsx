@@ -2,34 +2,26 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Header } from './components/Header';
 import { Panel } from './components/Panel';
+import { THEME_STORAGE_KEY, applyTheme, getInitialTheme, type Theme } from './lib/theme';
 import type { PanelConfig } from './types';
 
 const DEFAULT_CONFIG: PanelConfig = { lang: 'en', speed: 40, maxTokens: 500 };
-const THEME_STORAGE_KEY = 'token-simulation-theme';
 const MAX_PANELS = 5;
 
 type PanelEntry = { id: string; initialConfig: PanelConfig };
-type Theme = 'light' | 'dark';
+type Props = {
+  embedded?: boolean;
+};
 
 let idCounter = 0;
 const makeId = () => `p${++idCounter}`;
 
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
-
-  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
-
-  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-export default function App() {
+export default function App({ embedded = false }: Props) {
   const [panels, setPanels] = useState<PanelEntry[]>([{ id: makeId(), initialConfig: DEFAULT_CONFIG }]);
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
+    applyTheme(theme);
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
@@ -51,9 +43,13 @@ export default function App() {
   const reachedMaxPanels = panels.length >= MAX_PANELS;
 
   return (
-    <div className="min-h-screen bg-bg text-text">
-      <Header theme={theme} onToggleTheme={toggleTheme} />
-      <main className="mx-auto flex max-w-4xl flex-col gap-6 px-6 py-8">
+    <div className={embedded ? 'bg-bg text-text' : 'min-h-screen bg-bg text-text'}>
+      {!embedded && <Header theme={theme} onToggleTheme={toggleTheme} />}
+      <main
+        className={`mx-auto flex max-w-4xl flex-col gap-6 px-6 ${
+          embedded ? 'pb-8 pt-0' : 'py-8'
+        }`}
+      >
         <AnimatePresence initial={false}>
           {panels.map((panel) => (
             <Panel

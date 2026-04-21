@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect x="60" y="60" width="1080" height="510" rx="28" fill="#141414" stroke="#262626" stroke-width="2"/>
+  <path d="M120 208h252" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M120 250h332" stroke="#737373" stroke-width="6" stroke-linecap="round"/>
+  <path d="M120 420h420" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M120 462h360" stroke="#737373" stroke-width="6" stroke-linecap="round"/>
+  <rect x="650" y="168" width="420" height="236" rx="24" fill="#0a0a0a" stroke="#262626" stroke-width="2"/>
+  <path d="M710 234h240" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M710 284h168" stroke="#737373" stroke-width="6" stroke-linecap="round"/>
+  <path d="M710 334h298" stroke="#f5f5f5" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="992" cy="284" r="10" fill="#f5f5f5"/>
+  <text x="120" y="132" fill="#a3a3a3" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="6">LLM TOKEN SPEED SIMULATION</text>
+  <text x="120" y="370" fill="#f5f5f5" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700">Visualize tokens per second</text>
+  <text x="120" y="520" fill="#a3a3a3" font-family="Inter, Arial, sans-serif" font-size="34">Compare pacing, readability, and streaming UX on real text.</text>
+</svg>

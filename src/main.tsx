@@ -3,8 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!;
+const embedded = root.dataset.embedded === 'true';
+
+createRoot(root).render(
   <StrictMode>
-    <App />
+    <App embedded={embedded} />
   </StrictMode>,
 );
