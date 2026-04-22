@@ -47,6 +47,25 @@
         "mainEntityOfPage": "https://iylmwysst.github.io/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://iylmwysst.github.io/llm-token-speed-simulation/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tokens Per Second vs Words Per Minute"
+          }
+        ]
+      }
+    </script>
     <script type="module" src="/src/theme-init.ts"></script>
     <link rel="stylesheet" href="/src/index.css" />
   </head>
@@ -57,12 +76,63 @@
           LLM Token Speed Simulation
         </a>
         <div class="flex items-center gap-4 text-sm text-text-muted">
-          <nav class="hidden gap-4 md:flex">
+          <nav class="hidden items-center gap-4 md:flex">
             <a href="/llm-token-speed-simulation/" class="hover:text-text">Simulator</a>
-            <a href="/llm-token-speed-simulation/what-is-token-per-second/" class="hover:text-text">What Is TPS</a>
-            <a href="/llm-token-speed-simulation/how-fast-is-40-tokens-per-second/" class="hover:text-text">40 TPS</a>
-            <a href="/llm-token-speed-simulation/compare-llm-speed-across-languages/" class="hover:text-text">Cross-Language Speed</a>
-            <a href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/" class="text-text">TPS vs WPM</a>
+            <details class="group relative">
+              <summary
+                class="flex cursor-pointer list-none items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 transition-colors hover:text-text [&::-webkit-details-marker]:hidden"
+              >
+                <span>Articles</span>
+                <svg
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                  class="h-4 w-4 transition-transform group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m5.75 8.5 4.25 4.25 4.25-4.25" />
+                </svg>
+              </summary>
+              <div
+                class="absolute right-0 top-full z-20 mt-3 w-72 rounded-2xl border border-border bg-surface p-2 shadow-[0_18px_50px_rgba(0,0,0,0.08)]"
+              >
+                <a
+                  href="/llm-token-speed-simulation/what-is-token-per-second/"
+                  class="block rounded-xl px-3 py-3 text-sm leading-6 text-text-muted no-underline transition-colors hover:bg-bg hover:text-text"
+                >
+                  What is token per second?
+                </a>
+                <a
+                  href="/llm-token-speed-simulation/how-fast-is-40-tokens-per-second/"
+                  class="block rounded-xl px-3 py-3 text-sm leading-6 text-text-muted no-underline transition-colors hover:bg-bg hover:text-text"
+                >
+                  How fast is 40 tokens per second?
+                </a>
+                <a
+                  href="/llm-token-speed-simulation/compare-llm-speed-across-languages/"
+                  class="block rounded-xl px-3 py-3 text-sm leading-6 text-text-muted no-underline transition-colors hover:bg-bg hover:text-text"
+                >
+                  Compare LLM token speed across languages
+                </a>
+                <a
+                  href="/llm-token-speed-simulation/tokens-per-second-vs-words-per-minute/"
+                  aria-current="page"
+                  class="block rounded-xl bg-bg px-3 py-3 text-sm leading-6 text-text no-underline"
+                >
+                  Tokens per second vs words per minute
+                </a>
+                <div class="my-2 border-t border-border"></div>
+                <a
+                  href="/llm-token-speed-simulation/about/"
+                  class="block rounded-xl px-3 py-3 text-sm leading-6 text-text-muted no-underline transition-colors hover:bg-bg hover:text-text"
+                >
+                  About Pipat Khambun
+                </a>
+              </div>
+            </details>
           </nav>
           <button
             type="button"
@@ -81,6 +151,20 @@
     <main class="mx-auto max-w-5xl px-6 py-10">
       <article class="space-y-8">
         <header class="space-y-4">
+          <nav aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center gap-2 text-sm text-text-muted">
+              <li>
+                <a
+                  href="/llm-token-speed-simulation/"
+                  class="underline decoration-border underline-offset-4 hover:text-text"
+                >
+                  Home
+                </a>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" class="text-text">Tokens per second vs words per minute</li>
+            </ol>
+          </nav>
           <p class="font-mono text-xs uppercase tracking-[0.24em] text-text-muted">TPS vs WPM</p>
           <h1 class="max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
             Tokens per second vs words per minute
@@ -91,7 +175,7 @@
           </p>
           <p class="text-sm text-text-muted">
             By
-            <a href="https://github.com/iylmwysst" class="underline decoration-border underline-offset-4"
+            <a href="/llm-token-speed-simulation/about/" class="underline decoration-border underline-offset-4"
               >Pipat Khambun</a
             >
             · Updated April 22, 2026
@@ -181,7 +265,13 @@
     <footer class="border-t border-border">
       <div class="mx-auto flex max-w-4xl flex-col gap-3 px-6 py-6 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
         <p>
-          Written by <span class="font-semibold text-text">Pipat Khambun</span> to help product
+          Written by
+          <a
+            href="/llm-token-speed-simulation/about/"
+            class="font-semibold text-text underline decoration-border underline-offset-4"
+            >Pipat Khambun</a
+          >
+          to help product
           and engineering teams speak the same speed language.
         </p>
         <a href="/llm-token-speed-simulation/" class="hover:text-text">Back to simulator</a>

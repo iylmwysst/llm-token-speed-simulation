@@ -11,6 +11,7 @@ export default defineConfig({
     rollupOptions: {
       input: [
         html('index.html'),
+        html('about/index.html'),
         html('what-is-token-per-second/index.html'),
         html('how-fast-is-40-tokens-per-second/index.html'),
         html('compare-llm-speed-across-languages/index.html'),
